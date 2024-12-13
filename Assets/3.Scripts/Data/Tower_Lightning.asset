@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e63946e580cf2d4a92b0992cb25f784, type: 3}
+  m_Name: Tower_Lightning
+  m_EditorClassIdentifier: 
+  Name: Lightning Tower
+  Element: Electric
+  Damage: 4
+  Range: 4
+  FireRate: 0.75
+  Price: 25
+  Info: Fires chain lightning that bounces between multiple targets.
+  UpgradePrice: 25
+  SellPrice: 13
+  TowerImage: {fileID: 21300000, guid: 6bf3e7b64cc778a4a84c0101a7677738, type: 3}

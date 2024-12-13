@@ -1,0 +1,347 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c50e247704893e48bf6a1a64ed28416, type: 3}
+  m_Name: MapDataBase
+  m_EditorClassIdentifier: 
+  objectsData:
+  - <Name>k__BackingField: 20.Map_StairWall
+    <ID>k__BackingField: 20
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    <Prefab>k__BackingField: {fileID: 5130954367302341471, guid: ccb50e337e139db478074fea40b99e0c, type: 3}
+  - <Name>k__BackingField: 21.Map_WallCorner
+    <ID>k__BackingField: 21
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 4032375691204243609, guid: f01fd71c8df78ef4695e9461d5264752, type: 3}
+  - <Name>k__BackingField: 22.Map_NormalBlock1
+    <ID>k__BackingField: 22
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 3215428512219568092, guid: d576d348dc40ebe4cbc6dd796f12c46d, type: 3}
+  - <Name>k__BackingField: 23.Map_NormalBlock2
+    <ID>k__BackingField: 23
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 8689521476107282135, guid: 67a82d517de39f843bcd7e560d78f714, type: 3}
+  - <Name>k__BackingField: 24.Map_Timber1
+    <ID>k__BackingField: 24
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    <Prefab>k__BackingField: {fileID: 1634407741784302925, guid: 27e359962909703419bdb5ed9fe511ec, type: 3}
+  - <Name>k__BackingField: 25.Map_Timber2
+    <ID>k__BackingField: 25
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    <Prefab>k__BackingField: {fileID: 1479813491454220372, guid: 47f9f5ecbb6751e4ca06d83b9cd0f8af, type: 3}
+  - <Name>k__BackingField: 26.Map_Tree1
+    <ID>k__BackingField: 26
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 5637887238146199691, guid: 359d66ee1120abb4baedd19bf5697e16, type: 3}
+  - <Name>k__BackingField: 27.Map_Tree2
+    <ID>k__BackingField: 27
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 2948599226672562039, guid: 92204027ecc97ab46bbc4d2d8d4d9325, type: 3}
+  - <Name>k__BackingField: 28.Map_Tree3
+    <ID>k__BackingField: 28
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 7597224455167945969, guid: 5383f90efc0db2142ab9c2eabee98fd6, type: 3}
+  - <Name>k__BackingField: 29.Map_Floe
+    <ID>k__BackingField: 29
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 5029468931748558946, guid: 001443ee9d4baeb4d82df4b39c698a5c, type: 3}
+  - <Name>k__BackingField: 30.Map_Icicle
+    <ID>k__BackingField: 30
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    <Prefab>k__BackingField: {fileID: 829461642035295409, guid: c9eb03a235ebf7a428d1aeb53c149927, type: 3}
+  - <Name>k__BackingField: 31.Map_Igloo
+    <ID>k__BackingField: 31
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: 2}
+    - {x: 0, y: -1}
+    - {x: 1, y: -1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: -1}
+    - {x: 2, y: 0}
+    - {x: 2, y: -1}
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: -1, y: 2}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 0, y: 3}
+    <Prefab>k__BackingField: {fileID: 8093197769515591527, guid: f6517b4da53df8146b657071cfba62da, type: 3}
+  - <Name>k__BackingField: 32.Map_Present-box
+    <ID>k__BackingField: 32
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 6106828494821058895, guid: c6c640ccbc4fd474eb255417cea084c1, type: 3}
+  - <Name>k__BackingField: 33.Map_Presne-box-Long
+    <ID>k__BackingField: 33
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 5717467319820604759, guid: 98e5305b5af4c084c8360c415dba02df, type: 3}
+  - <Name>k__BackingField: 34.Map_Sledge
+    <ID>k__BackingField: 34
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    <Prefab>k__BackingField: {fileID: 9215016176612122574, guid: e6065ef52b64f814f80630158c7907ea, type: 3}
+  - <Name>k__BackingField: 35.Map_Snowman
+    <ID>k__BackingField: 35
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 4556097991571277, guid: a6ee6b50bfe29084780e6e28cb91c057, type: 3}
+  - <Name>k__BackingField: 36.Map_Stalags
+    <ID>k__BackingField: 36
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 2109833596438352062, guid: 4abb29b5534a9134bb9c7dcbd1f15b0b, type: 3}
+  - <Name>k__BackingField: 37.Map_Stone-snow
+    <ID>k__BackingField: 37
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 6193775280719550761, guid: 0a4a4240537b38e4e808432c7c4092ba, type: 3}
+  - <Name>k__BackingField: 38.Map_Stump-snow
+    <ID>k__BackingField: 38
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 2563245029500241123, guid: 8a69f41182b28ea4c84f2b33ab371ab9, type: 3}
+  - <Name>k__BackingField: 39.Map_Tree-dead-snow
+    <ID>k__BackingField: 39
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 8494545716493850589, guid: eba20c2dd15585c4aa5401dcd30e9a0d, type: 3}
+  - <Name>k__BackingField: 40.crate-box-traingle
+    <ID>k__BackingField: 40
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 9141087689591872214, guid: c05b6106036659143a2422a33528c79d, type: 3}
+  - <Name>k__BackingField: '41.cactus02 '
+    <ID>k__BackingField: 41
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 3395638631560493103, guid: 35b6f923f94f2fc469d9375fc1ef7b26, type: 3}
+  - <Name>k__BackingField: 42.cactus-big
+    <ID>k__BackingField: 42
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 4881184270719664391, guid: 46d11e5fc56717444bd519f0dda2efbf, type: 3}
+  - <Name>k__BackingField: 43.cactus-basic
+    <ID>k__BackingField: 43
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 3453796439790293893, guid: 8301ffc78b83ed14daa49fb819b28c25, type: 3}
+  - <Name>k__BackingField: 44.palm-big
+    <ID>k__BackingField: 44
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 3056795288620546398, guid: 6ea956c8e74bd7840b5731fd6b37555b, type: 3}
+  - <Name>k__BackingField: '45.palm-small '
+    <ID>k__BackingField: 45
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 5124286851542970967, guid: 65ac8d31cce0cb64f9f5d0917853108c, type: 3}
+  - <Name>k__BackingField: 46.palm-round
+    <ID>k__BackingField: 46
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 8302966372458009622, guid: daaf8739e23dacb4c943ce4341b82ce3, type: 3}
+  - <Name>k__BackingField: 47.egypt-stone-block
+    <ID>k__BackingField: 47
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
+    - {x: -1, y: 1}
+    <Prefab>k__BackingField: {fileID: 5416993908032843975, guid: 4c2a8273f6352eb4bbb563410904f396, type: 3}
+  - <Name>k__BackingField: 48.egypt-stone-block-square
+    <ID>k__BackingField: 48
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    - {x: -1, y: 0}
+    <Prefab>k__BackingField: {fileID: 2139013056745518463, guid: 3f21ec365e0584e4cac3f38070ac9d0c, type: 3}
+  - <Name>k__BackingField: 49.obelisk-old-broken
+    <ID>k__BackingField: 49
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: -1, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: 1, y: -1}
+    - {x: 0, y: -1}
+    - {x: -1, y: -1}
+    <Prefab>k__BackingField: {fileID: 7861293623288028349, guid: 33de28fc3a68ff04ca4ba287e7710111, type: 3}
+  - <Name>k__BackingField: 50.egypt-obelisk-old
+    <ID>k__BackingField: 50
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: -1, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: 0, y: -1}
+    - {x: -1, y: -1}
+    - {x: 1, y: -1}
+    <Prefab>k__BackingField: {fileID: 2942165935289242377, guid: 37fe1baefd9de0a44b0d3207d03b7d4b, type: 3}
+  - <Name>k__BackingField: 51.egypt-pillar-proto-doric
+    <ID>k__BackingField: 51
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: -1, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: 0, y: -1}
+    - {x: -1, y: -1}
+    - {x: 1, y: -1}
+    <Prefab>k__BackingField: {fileID: 7230464728783089039, guid: 84b56e613e9c5df4296891c1cf98e642, type: 3}
+  - <Name>k__BackingField: 52.egypt-stand
+    <ID>k__BackingField: 52
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: -1, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: 0, y: -1}
+    - {x: -1, y: -1}
+    - {x: 1, y: -1}
+    <Prefab>k__BackingField: {fileID: 7188499777077675462, guid: 722e4d2c6417acc46967ac2a8cd34eaa, type: 3}
+  - <Name>k__BackingField: 53.pyramid-old
+    <ID>k__BackingField: 53
+    <OccupiedCells>k__BackingField:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: -1}
+    - {x: 3, y: -2}
+    - {x: 3, y: -3}
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: -1}
+    - {x: 2, y: -2}
+    - {x: 2, y: -3}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: -1}
+    - {x: 1, y: -2}
+    - {x: 1, y: -3}
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: -1}
+    - {x: 0, y: -2}
+    - {x: 0, y: -3}
+    - {x: -1, y: 0}
+    - {x: -1, y: 1}
+    - {x: -1, y: 2}
+    - {x: -1, y: 3}
+    - {x: -1, y: -1}
+    - {x: -1, y: -2}
+    - {x: -1, y: -3}
+    - {x: -2, y: 0}
+    - {x: -2, y: 1}
+    - {x: -2, y: 2}
+    - {x: -2, y: 3}
+    - {x: -2, y: -1}
+    - {x: -2, y: -2}
+    - {x: -2, y: -3}
+    - {x: -3, y: 0}
+    - {x: -3, y: 1}
+    - {x: -3, y: 2}
+    - {x: -3, y: 3}
+    - {x: -3, y: -1}
+    - {x: -3, y: -2}
+    - {x: -3, y: -3}
+    <Prefab>k__BackingField: {fileID: 4461989706103818698, guid: 91f03afae044e1f4ba281e10e959280e, type: 3}
+  - <Name>k__BackingField: 54.sand-castle
+    <ID>k__BackingField: 54
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 5621244821914641567, guid: 5ddcbce997202f647b29d05f8de69e16, type: 3}
+  - <Name>k__BackingField: 56.pillar_1
+    <ID>k__BackingField: 56
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    <Prefab>k__BackingField: {fileID: 874428636862435787, guid: e79b861b440aba0448402498289d7b29, type: 3}
+  - <Name>k__BackingField: 55.sphinx
+    <ID>k__BackingField: 55
+    <OccupiedCells>k__BackingField:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: -1, y: 1}
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: -1, y: 0}
+    - {x: 0, y: -1}
+    - {x: -1, y: -1}
+    - {x: 1, y: -1}
+    - {x: 1, y: 2}
+    - {x: -1, y: 2}
+    - {x: 0, y: 3}
+    - {x: 1, y: 3}
+    - {x: -1, y: 3}
+    - {x: 0, y: -2}
+    - {x: 1, y: -2}
+    - {x: -1, y: -2}
+    - {x: 0, y: -3}
+    - {x: 1, y: -3}
+    - {x: -1, y: -3}
+    <Prefab>k__BackingField: {fileID: 3903624555953935229, guid: 7af1797662083fc46929f8901c7e0029, type: 3}
