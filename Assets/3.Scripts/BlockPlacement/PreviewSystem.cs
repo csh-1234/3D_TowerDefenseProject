@@ -29,6 +29,7 @@ public class PreviewSystem : MonoBehaviour
         cellIndicator.SetActive(false);
         cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
+
     private void Update()
     {
         if (MouseTooltip != null) 
@@ -45,7 +46,6 @@ public class PreviewSystem : MonoBehaviour
         currentRotation = rotationIndex;
         previewObject = Instantiate(prefab);
         MouseTooltip = Instantiate(MouseTooltipPrefab,MainCanvas.transform);
-        print("프리뷰 생성");
         previewObject.name = prefab.name;
 
         Tower[] towers = previewObject.GetComponentsInChildren<Tower>();
@@ -101,8 +101,6 @@ public class PreviewSystem : MonoBehaviour
                 materialsCopy[i].SetFloat("_Blend", 0);
                 materialsCopy[i].SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                 materialsCopy[i].SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                materialsCopy[i].SetInt("_ZWrite", 1);
-                materialsCopy[i].renderQueue = 3000;
 
                 if (materialsCopy[i].color != null)
                 {
@@ -144,7 +142,6 @@ public class PreviewSystem : MonoBehaviour
             Destroy(previewObject);
         }
         Destroy(MouseTooltip);
-        print("프리뷰 제거");
     }
 
     public void UpdatePosition(Vector3 position, bool validity, int floor = 0)
@@ -163,9 +160,12 @@ public class PreviewSystem : MonoBehaviour
     {
         foreach (var material in previewMaterialsCopy)
         {
-            Color color = validity ? originalMaterials[previewMaterialsCopy.IndexOf(material)].color : Color.red;
-            color.a = previewAlpha;
-            material.color = color;
+            if(material.color != null)
+            {
+                Color color = validity ? originalMaterials[previewMaterialsCopy.IndexOf(material)].color : Color.red;
+                color.a = previewAlpha;
+                material.color = color;
+            }
         }
     }
 
@@ -216,7 +216,6 @@ public class PreviewSystem : MonoBehaviour
 
     public void UpdateRotation(int rotationIndex)
     {
-
         // 타워 프리뷰 회전 소리
         SoundManager.Instance.Play("TowerPreviewRotationSound", SoundManager.Sound.Effect);
         currentRotation = rotationIndex;

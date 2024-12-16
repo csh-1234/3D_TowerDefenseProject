@@ -8,7 +8,6 @@ public class PlacementSystem : MonoBehaviour
     private static PlacementSystem instance;
     public static PlacementSystem Instance { get { return instance; } }
 
-    [Header("Required Components")]
     [SerializeField] private InputManager inputManager;
     [SerializeField] private Grid grid;
     [SerializeField] private AGrid aGrid;
@@ -39,32 +38,9 @@ public class PlacementSystem : MonoBehaviour
             return;
         }
 
-        // 필수 컴포넌트 확인
-        ValidateComponents();
-
-        // 데이터 초기화
         BlockData = new GridData();
         TowerData = new GridData();
-
         StopPlacement();
-    }
-
-    private void ValidateComponents() 
-    {
-        if (inputManager == null) inputManager = GetComponent<InputManager>();
-        if (grid == null) grid = GetComponent<Grid>();
-        if (aGrid == null) aGrid = GetComponent<AGrid>();
-        if (preview == null) preview = GetComponent<PreviewSystem>();
-        if (objectPlacer == null) objectPlacer = GetComponent<ObjectPlacer>();
-
-        // 필수 컴포넌트 누락 체크
-        if (inputManager == null) Debug.LogError("InputManager is missing!");
-        if (grid == null) Debug.LogError("Grid is missing!");
-        if (aGrid == null) Debug.LogError("AGrid is missing!");
-        if (database == null) Debug.LogError("ObjectsDatabaseSO is missing!");
-        if (gridVisualization == null) Debug.LogError("GridVisualization is missing!");
-        if (preview == null) Debug.LogError("PreviewSystem is missing!");
-        if (objectPlacer == null) Debug.LogError("ObjectPlacer is missing!");
     }
 
     private void Start()
@@ -77,9 +53,6 @@ public class PlacementSystem : MonoBehaviour
 
     public void StartPlacement(int ID, string cardID)
     {
-        // 필수 컴포넌트 재확인
-        //if (!ValidateBeforePlacement()) return;
-
         currentCardID = cardID;
         gridVisualization.SetActive(true);
         buildingState = new PlacementState(ID, grid, preview, database, BlockData, TowerData, objectPlacer, inputManager, aGrid);
@@ -90,9 +63,6 @@ public class PlacementSystem : MonoBehaviour
 
     public void StartPlacement2(int ID)
     {
-        // 필수 컴포넌트 재확인
-        //if (!ValidateBeforePlacement()) return;
-
         gridVisualization.SetActive(true);
         buildingState = new PlacementState(ID, grid, preview, database, BlockData, TowerData, objectPlacer, inputManager, aGrid);
         inputManager.OnClicked += PlaceStructure;
@@ -127,11 +97,8 @@ public class PlacementSystem : MonoBehaviour
     {
         if (!database.IsTower(ID))
         {
-            Debug.LogError($"Attempted to place non-tower object (ID: {ID}) using StartTowerPlacement");
             return;
         }
-
-        //if (!ValidateBeforePlacement()) return;
 
         gridVisualization.SetActive(true);
         buildingState = new PlacementState(ID, grid, preview, database, BlockData, TowerData, objectPlacer, inputManager, aGrid);
@@ -163,8 +130,6 @@ public class PlacementSystem : MonoBehaviour
     private IEnumerator HandlePlacement(Vector3Int gridPosition, PlacementState placementState)
     {
         isPlacing = true;
-        
-        // 경로 체크 전에 한번 더 유효성 검사
         if (!placementState.IsValidPlacement(gridPosition))
         {
             isPlacing = false;
@@ -185,7 +150,6 @@ public class PlacementSystem : MonoBehaviour
         float timeout = Time.time + 0.5f;
         while (!checkComplete && Time.time < timeout)
         {
-            // 대기 중에도 지속 유효성 검사
             if (!placementState.IsValidPlacement(gridPosition))
             {
                 placementState.RestoreTemporaryNodes();
@@ -195,28 +159,17 @@ public class PlacementSystem : MonoBehaviour
             yield return null;
         }
 
-        // 노드 상태 원복
         placementState.RestoreTemporaryNodes();
-
-        // 최종 유효성 검사
+        
         if (pathValid && placementState.IsValidPlacement(gridPosition))
         {
-            placementState.OnAction(gridPosition);
-            // 배치 성공 시 이벤트에 카드 ID도 함께 전달
+            placementState.OnAction(gridPosition);      
             OnPlacementSuccess?.Invoke(placementState.GetCurrentID(), currentCardID);
         }
 
         isPlacing = false;
     }
 
-    //private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
-    //{
-    //    GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? 
-    //        floorData : 
-    //        furnitureData;
-
-    //    return selectedData.CanPlaceObejctAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
-    //}
 
     private void StopPlacement()
     {
@@ -273,34 +226,27 @@ public class PlacementSystem : MonoBehaviour
 
     public void Clear()
     {
-        // 배치 상태 초기화
         StopPlacement();
         
-        // 그리드 데이터 초기화
         BlockData = new GridData();
         TowerData = new GridData();
         
-        // 프리뷰 시스템 초기화
         if (preview != null)
         {
             preview.StopShowingPreview();
         }
         
-        // 그리드 시각화 비활성화
         if (gridVisualization != null)
         {
             gridVisualization.SetActive(false);
         }
 
-        // 이벤트 리스너 초기화
         OnPlacementSuccess = null;
         
-        // 상태 변수 초기화
         isPlacing = false;
         lastDetectedPosition = Vector3Int.zero;
         currentCardID = null;
         
-        // 코루틴 정리
-        //StopAllCoroutines();
+        StopAllCoroutines();
     }
 }

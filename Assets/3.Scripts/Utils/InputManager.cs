@@ -16,23 +16,19 @@ public class InputManager : MonoBehaviour
 
     public event Action OnClicked, OnExit, OnRotate;
 
-    
-
-
-
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             OnClicked?.Invoke();
         }
-        if (Input.GetMouseButtonDown(2))
-        {
-            OnExit?.Invoke();
-        }
         if (Input.GetMouseButtonDown(1))
         {
             OnRotate?.Invoke();
+        }
+        if (Input.GetMouseButtonDown(2))
+        {
+            OnExit?.Invoke();
         }
     }
 

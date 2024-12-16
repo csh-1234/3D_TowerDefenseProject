@@ -5,6 +5,13 @@ using System.Linq;
 
 public class PathManager : MonoBehaviour
 {
+    private class PathData
+    {
+        public Vector3[] CurrentPath { get; set; }
+        public bool IsValid { get; set; }
+        public AUnit PathUnit { get; set; }
+    }
+
     private static PathManager instance;
     public static PathManager Instance
     {
@@ -37,7 +44,12 @@ public class PathManager : MonoBehaviour
     }
 
     [SerializeField]
-    private List<Transform> spawnPoints = new List<Transform>();  // 여러 스폰 포인트
+    private Material actualPathMaterial;
+    [SerializeField]
+    private Material previewPathMaterial;
+
+    [SerializeField]
+    private List<Transform> spawnPoints = new List<Transform>(); 
     [SerializeField]
     private Transform targetPoint;
     private Dictionary<Transform, AUnit> pathUnits = new Dictionary<Transform, AUnit>();
@@ -45,25 +57,34 @@ public class PathManager : MonoBehaviour
     private bool isUpdating = false;
     private int pendingUpdates = 0;
 
-    // 경로 관리를 위한 추가 속성들
     private Dictionary<Transform, PathData> pathDataMap = new Dictionary<Transform, PathData>();
 
-    private class PathData
-    {
-        public Vector3[] CurrentPath { get; set; }
-        public bool IsValid { get; set; }
-        public AUnit PathUnit { get; set; }
-    }
-
-    // 경로 업데이트 이벤트
     public event System.Action<Transform, Vector3[]> OnPathUpdated;
     public event System.Action<bool> OnValidityChanged;
-
-    // 실제 경로 업데이트를 위한 이벤트 추가
     public event System.Action<Transform, Vector3[]> OnActualPathUpdated;
-    
-    // 실제 경로를 저장할 Dictionary 추가
     private Dictionary<Transform, Vector3[]> actualPaths = new Dictionary<Transform, Vector3[]>();
+
+    private void Start()
+    {
+        actualPathMaterial = Resources.Load<Material>("Line/PathMat_Red");
+        if (actualPathMaterial == null)
+        {
+            actualPathMaterial = new Material(Shader.Find("Sprites/Default"));
+            actualPathMaterial.color = Color.red;
+        }
+
+        previewPathMaterial = Resources.Load<Material>("Line/PathMat_Gray");
+        if (previewPathMaterial == null)
+        {
+            previewPathMaterial = new Material(Shader.Find("Sprites/Default"));
+            previewPathMaterial.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        }
+
+        pathUnits = new Dictionary<Transform, AUnit>();
+        pathDataMap = new Dictionary<Transform, PathData>();
+
+        InitializePathUnits();
+    }
 
     private void NotifyPathUpdate(Transform spawnPoint, Vector3[] path)
     {
@@ -75,37 +96,6 @@ public class PathManager : MonoBehaviour
         OnValidityChanged?.Invoke(isValid);
     }
 
-    [SerializeField]
-    private Material actualPathMaterial;  // 실제 경로용 머티리얼
-    [SerializeField]
-    private Material previewPathMaterial; // 프리뷰 경로용 머티리얼
-
-    private void Start()
-    {
-        // ��티리얼 로드
-        actualPathMaterial = Resources.Load<Material>("Line/PathMat_Red");
-        if (actualPathMaterial == null)
-        {
-            Debug.LogWarning("Failed to load PathMat_Red, creating default material");
-            actualPathMaterial = new Material(Shader.Find("Sprites/Default"));
-            actualPathMaterial.color = Color.red;
-        }
-
-        previewPathMaterial = Resources.Load<Material>("Line/PathMat_Gray");
-        if (previewPathMaterial == null)
-        {
-            Debug.LogWarning("Failed to load PathMat_Gray, creating default material");
-            previewPathMaterial = new Material(Shader.Find("Sprites/Default"));
-            previewPathMaterial.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-        }
-
-        // pathUnits와 pathDataMap 초기화
-        pathUnits = new Dictionary<Transform, AUnit>();
-        pathDataMap = new Dictionary<Transform, PathData>();
-
-        InitializePathUnits();
-    }
-
     public Vector3[] GetCurrentPath(Transform spawnPoint = null)
     {
         if (spawnPoint == null)
@@ -115,7 +105,6 @@ public class PathManager : MonoBehaviour
         {
             if (data.CurrentPath == null || data.CurrentPath.Length == 0)
             {
-                // AUnit에서 직접 경로 가져오기 시��
                 AUnit unit = pathUnits[spawnPoint];
                 if (unit != null)
                 {
@@ -124,15 +113,11 @@ public class PathManager : MonoBehaviour
             }
             return data.CurrentPath;
         }
-        
-        Debug.LogWarning($"No path data found for spawn point: {spawnPoint.name}");
         return null;
     }
 
     public void UpdateAllPaths()
     {
-        // 경로 업데이트 전에 노드 상태 검증
-
         UpdatePath();
     }
 
@@ -158,34 +143,6 @@ public class PathManager : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForAllPathsCalculated()
-    {
-        yield return new WaitForEndOfFrame();
-
-        bool anyValidPath = false;
-        
-        // 모든 스폰 포인트의 경로 유효성 확인
-        foreach (var spawnPoint in spawnPoints)
-        {
-            if (spawnPoint != null && pathUnits.TryGetValue(spawnPoint, out AUnit unit))
-            {
-                Vector3[] currentPath = unit.GetCurrentPath();
-                if (currentPath != null && currentPath.Length > 0)
-                {
-                    anyValidPath = true;
-                    if (pathDataMap.ContainsKey(spawnPoint))
-                    {
-                        pathDataMap[spawnPoint].IsValid = true;
-                        pathDataMap[spawnPoint].CurrentPath = currentPath;
-                    }
-                }
-            }
-        }
-
-        HasValidPath = anyValidPath;
-        NotifyValidityChange(anyValidPath);
-    }
-
     public void UpdatePath()
     {
         if (isUpdating)
@@ -204,7 +161,6 @@ public class PathManager : MonoBehaviour
             }
         }
 
-        // 타임아웃 설정
         StartCoroutine(UpdateTimeout());
     }
 
@@ -222,7 +178,7 @@ public class PathManager : MonoBehaviour
         }
     }
 
-    // 가장 짧은 경로를 가진 스폰 포인트 선택
+
     public Transform GetBestSpawnPoint()
     {
         Transform bestSpawn = null;
@@ -255,47 +211,16 @@ public class PathManager : MonoBehaviour
         return length;
     }
 
-    private void OnDestroy()
-    {
-        foreach (var unit in pathUnits.Values)
-        {
-            if (unit != null)
-            {
-                Destroy(unit.gameObject);
-            }
-        }
-        pathUnits.Clear();
-    }
-
-    public void CleanupUnusedPaths()
-    {
-        List<Transform> keysToRemove = new List<Transform>();
-        foreach (var kvp in pathUnits)
-        {
-            if (kvp.Key == null || kvp.Value == null)
-            {
-                keysToRemove.Add(kvp.Key);
-            }
-        }
-
-        foreach (var key in keysToRemove)
-        {
-            if (pathUnits[key] != null)
-            {
-                Destroy(pathUnits[key].gameObject);
-            }
-            pathUnits.Remove(key);
-        }
-    }
-
     public List<Transform> GetSpawnPoints() => new List<Transform>(spawnPoints);
     public Transform GetTargetPoint() => targetPoint;
     public Vector3 GetTargetPosition() => targetPoint != null ? targetPoint.position : Vector3.zero;
     public Vector3 GetSpawnPosition(Transform spawnPoint = null)
     {
         if (spawnPoint == null)
+        {
             spawnPoint = GetBestSpawnPoint();
-            
+        }
+
         return spawnPoint != null ? spawnPoint.position : spawnPoints[0].position;
     }
     public bool HasValidPoints() => spawnPoints != null && spawnPoints.Count > 0 && targetPoint != null;
@@ -396,15 +321,12 @@ public class PathManager : MonoBehaviour
 
     public void Clear()
     {
-        // 모티리얼 임시 저장
         Material savedActualMaterial = actualPathMaterial;
         Material savedPreviewMaterial = previewPathMaterial;
 
-        // 모든 경로 데이터 초기화
         pathDataMap.Clear();
         actualPaths.Clear();
         
-        // 모든 유닛 초기화 및 제거
         foreach (var unit in pathUnits.Values)
         {
             if (unit != null)
@@ -415,24 +337,19 @@ public class PathManager : MonoBehaviour
         }
         pathUnits.Clear();
 
-        // 이벤트 리스너 초기화
         OnPathUpdated = null;
         OnValidityChanged = null;
         OnActualPathUpdated = null;
 
-        // 상태 초기화
         isUpdating = false;
         pendingUpdates = 0;
         HasValidPath = false;
 
-        // 코루틴 정리
         StopAllCoroutines();
 
-        // 머티리얼 복원
         actualPathMaterial = savedActualMaterial;
         previewPathMaterial = savedPreviewMaterial;
 
-        // 경로 유닛 재초기화
         InitializePathUnits();
     }
 
@@ -440,7 +357,6 @@ public class PathManager : MonoBehaviour
     {
         if (spawnPoints == null || spawnPoints.Count == 0 || targetPoint == null)
         {
-            Debug.LogWarning("Cannot initialize path units: Missing spawn points or target point");
             return;
         }
 
@@ -502,5 +418,17 @@ public class PathManager : MonoBehaviour
 
         // 새로운 포인트로 초기화
         InitializePathUnits();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var unit in pathUnits.Values)
+        {
+            if (unit != null)
+            {
+                Destroy(unit.gameObject);
+            }
+        }
+        pathUnits.Clear();
     }
 } 

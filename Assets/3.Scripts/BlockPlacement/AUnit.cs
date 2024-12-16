@@ -15,10 +15,6 @@ public class AUnit : MonoBehaviour
     private Material actualPathMaterial;  // 실제 경로용 머티리얼
     [SerializeField]
     private Material previewPathMaterial; // 프리뷰 경로용 머티리얼
-    [SerializeField]
-    private Color actualPathColor = Color.black;
-    [SerializeField]
-    private Color previewPathColor = new Color(1f, 0.5f, 0f, 0.5f);
 
     public event Action<Vector3[], bool> OnPathUpdated;
 
@@ -44,45 +40,40 @@ public class AUnit : MonoBehaviour
 
     private void InitializeLineRenderers()
     {
-        // 실제 경로용 LineRenderer
+        // 실제 경로 LineRenderer
         if (actualPathRenderer == null)
         {
             GameObject actualPathObj = new GameObject("ActualPathRenderer");
             actualPathObj.transform.SetParent(transform);
             actualPathRenderer = actualPathObj.AddComponent<LineRenderer>();
-            SetupLineRenderer(actualPathRenderer, actualPathColor, actualPathMaterial);
+            SetupLineRenderer(actualPathRenderer, actualPathMaterial);
         }
 
-        // 프리뷰 경로용 LineRenderer
+        // 프리뷰 경로 LineRenderer
         if (previewPathRenderer == null)
         {
             GameObject previewObj = new GameObject("PreviewPathRenderer");
             previewObj.transform.SetParent(transform);
             previewPathRenderer = previewObj.AddComponent<LineRenderer>();
-            SetupLineRenderer(previewPathRenderer, previewPathColor, previewPathMaterial);
+            SetupLineRenderer(previewPathRenderer, previewPathMaterial);
         }
 
         ShowPreviewPath(false);
         ShowActualPath(true);
     }
 
-    private void SetupLineRenderer(LineRenderer renderer, Color color, Material material)
+    private void SetupLineRenderer(LineRenderer renderer, Material material)
     {
         if (renderer != null)
         {
             renderer.startWidth = 0.15f;
             renderer.endWidth = 0.15f;
             
-            // 머티리얼이 할당되지 않은 경우에만 기본 머티리얼 생성
             if (material == null)
             {
                 material = new Material(Shader.Find("Sprites/Default"));
             }
-            
             renderer.material = new Material(material);
-            renderer.material.color = color;
-            renderer.startColor = color;
-            renderer.endColor = color;
             renderer.positionCount = 0;
             renderer.enabled = true;
             renderer.textureMode = LineTextureMode.Tile;
@@ -95,7 +86,9 @@ public class AUnit : MonoBehaviour
     {
         target = newTarget;
         if (target != null)
+        {
             UpdatePath();
+        }
     }
 
     public void UpdatePath()
@@ -112,7 +105,7 @@ public class AUnit : MonoBehaviour
         if (success)
         {
             this.path = path;
-            DrawPath(this.path, actualPathRenderer, actualPathColor);
+            DrawPath(this.path, actualPathRenderer);
             previewPathRenderer.positionCount = 0;
             OnPathUpdated?.Invoke(this.path, true);
 
@@ -148,7 +141,7 @@ public class AUnit : MonoBehaviour
         if (success)
         {
             previewPath = path;
-            DrawPath(previewPath, previewPathRenderer, previewPathColor);
+            DrawPath(previewPath, previewPathRenderer);
             OnPathUpdated?.Invoke(previewPath, true);
 
             if (PathManager.Instance != null)
@@ -169,7 +162,7 @@ public class AUnit : MonoBehaviour
         }
     }
 
-    private void DrawPath(Vector3[] pathToDraw, LineRenderer renderer, Color color)
+    private void DrawPath(Vector3[] pathToDraw, LineRenderer renderer)
     {
         if (pathToDraw == null || pathToDraw.Length == 0) 
         {
@@ -191,9 +184,6 @@ public class AUnit : MonoBehaviour
             points[i].y = pathHeight;
         }
 
-        renderer.material.color = color;
-        renderer.startColor = color;
-        renderer.endColor = color;
         renderer.positionCount = points.Length;
         renderer.SetPositions(points);
     }
@@ -235,14 +225,12 @@ public class AUnit : MonoBehaviour
         {
             actualPathMaterial = actualMat;
             actualPathRenderer.material = new Material(actualMat);
-            actualPathRenderer.material.color = actualPathColor;
         }
 
         if (previewMat != null && previewPathRenderer != null)
         {
             previewPathMaterial = previewMat;
             previewPathRenderer.material = new Material(previewMat);
-            previewPathRenderer.material.color = previewPathColor;
         }
     }
 

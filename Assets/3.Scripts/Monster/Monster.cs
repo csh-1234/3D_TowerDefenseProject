@@ -67,10 +67,6 @@ public class Monster : MonoBehaviour
             
             UpdateCurrentTarget();
         }
-        else
-        {
-            Debug.LogWarning("No valid path found for monster initialization");
-        }
     }
 
     private void OnActualPathUpdated(Transform updatedSpawnPoint, Vector3[] newPath)

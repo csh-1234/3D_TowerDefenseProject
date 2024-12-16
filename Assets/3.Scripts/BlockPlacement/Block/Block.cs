@@ -23,14 +23,6 @@ public class Block : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         PlacementSystem.Instance.OnPlacementSuccess += HandlePlacementSuccess;
     }
 
-    protected virtual void OnDestroy()
-    {
-        if (PlacementSystem.Instance != null)
-        {
-            PlacementSystem.Instance.OnPlacementSuccess -= HandlePlacementSuccess;
-            GameManager.Instance.HandTetrisList.Remove(this.gameObject);
-        }
-    }
 
     protected virtual void Placement()
     {
@@ -56,12 +48,20 @@ public class Block : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        print("ondrag");
         PlacementSystem.Instance.StartPlacementForDrag(blockType);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         PlacementSystem.Instance.StopPlacementForDrag();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (PlacementSystem.Instance != null)
+        {
+            PlacementSystem.Instance.OnPlacementSuccess -= HandlePlacementSuccess;
+            GameManager.Instance.HandTetrisList.Remove(this.gameObject);
+        }
     }
 }

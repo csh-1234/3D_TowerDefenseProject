@@ -54,8 +54,6 @@ public class ObjectPlacer : MonoBehaviour
     public int PlaceObject(GameObject prefab, Vector3 position, Quaternion rotation)
     {
         GameObject newObject = Instantiate(prefab, position, rotation);
-        
-        // null 항목 제거
         placedGameObjects.RemoveAll(item => item == null);
         
         placedGameObjects.Add(newObject);
@@ -66,7 +64,6 @@ public class ObjectPlacer : MonoBehaviour
     {
         if (gameObjectIndex < 0 || gameObjectIndex >= placedGameObjects.Count)
         {
-            Debug.LogWarning($"Invalid index for object removal: {gameObjectIndex}");
             return;
         }
 
@@ -74,7 +71,6 @@ public class ObjectPlacer : MonoBehaviour
         {
             Destroy(placedGameObjects[gameObjectIndex]);
             placedGameObjects[gameObjectIndex] = null;
-            Debug.Log($"Removed object at index: {gameObjectIndex}");
         }
     }
 

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -11,8 +9,8 @@ public class AGrid : MonoBehaviour
     public Vector2 gridWorldSize;
     public float nodeRadius;
     ANode[,] nodeArray;
-    float nodeDiameter;
-    int gridSizeX, gridSizeY;
+    private float nodeDiameter;
+    private int gridSizeX, gridSizeY;
 
     [SerializeField]
     private List<Vector2Int> obstaclePositions = new List<Vector2Int>();
@@ -21,8 +19,6 @@ public class AGrid : MonoBehaviour
     private ObjectsDatabaseSO database;
 
     private GridData BlockData;
-
-    // 노드의 임시 상태를 저장할 Dictionary 추가
     private Dictionary<Vector3Int, bool> temporaryNodeStates = new Dictionary<Vector3Int, bool>();
 
     void Awake()
@@ -137,6 +133,12 @@ public class AGrid : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// 인접 노트탐색
+    /// </summary>
+    /// <param name="node"></param>
+    /// <returns></returns>
     public List<ANode> GetNeighbours(ANode node)
     {
         List<ANode> neighbours = new List<ANode>();
