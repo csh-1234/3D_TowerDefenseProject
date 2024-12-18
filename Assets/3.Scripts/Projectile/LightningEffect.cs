@@ -3,8 +3,7 @@ using System.Collections;
 
 public class LightningEffect : MonoBehaviour
 {
-    //일단은 shader graph material 쓰기 전까진 이걸로 처리함
-    private LineRenderer lineRenderer;
+    private LineRenderer lineRenderer ;
     public int segments = 70;
     public float amplitude = 0.5f;
     public float duration = 0.2f;

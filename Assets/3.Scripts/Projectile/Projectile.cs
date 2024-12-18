@@ -12,14 +12,9 @@ public class Projectile : MonoBehaviour
     public int Damage = 5;
     public float Duration = 3f;
 
-    [Header("공통기능")]
-    [Tooltip("투사체가 타겟을 따라감")]
     public bool IsTargeting = false;
-    [Tooltip("투사체가 타겟 명중시 주변에 광역 데미지 발생")]
     public bool IsBomb = false;
-    [Tooltip("광역 데미지 범위")]
     public float BombRange = 3f;
-    [Tooltip("투사체 충돌이 없을시 스스로 파괴됨")]
     public bool isSelfDestroy = false;
     
     public Transform Target;
@@ -96,8 +91,6 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Base OnTriggerEnter - IsBomb: {IsBomb}");  // 디버그 로그 추가
-        
         if (IsBomb)
         {
             Bomb(other);
@@ -136,7 +129,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void NonBomb(Collider other)
     {
-        Debug.Log($"Base NonBomb - Target: {Target?.name}, Other: {other?.name}");  // 디버그 로그 추가
+        Debug.Log($"Base NonBomb - Target: {Target?.name}, Other: {other?.name}");  // ?붾쾭洹?濡쒓렇 異붽?
         
         if (other.CompareTag("Monster"))
         {
@@ -150,7 +143,7 @@ public class Projectile : MonoBehaviour
             }
 
             other.gameObject.GetComponent<Monster>().TakeDamage(Damage);
-            Debug.Log("Base NonBomb - Despawning");  // 디버그 로그 추가
+            Debug.Log("Base NonBomb - Despawning");  // ?붾쾭洹?濡쒓렇 異붽?
             ObjectManager.Instance.Despawn(this);
 
         }

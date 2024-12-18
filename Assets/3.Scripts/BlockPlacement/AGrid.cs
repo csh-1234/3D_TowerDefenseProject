@@ -8,9 +8,9 @@ public class AGrid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    ANode[,] nodeArray;
     private float nodeDiameter;
     private int gridSizeX, gridSizeY;
+    ANode[,] nodeArray;
 
     [SerializeField]
     private List<Vector2Int> obstaclePositions = new List<Vector2Int>();
@@ -20,6 +20,14 @@ public class AGrid : MonoBehaviour
 
     private GridData BlockData;
     private Dictionary<Vector3Int, bool> temporaryNodeStates = new Dictionary<Vector3Int, bool>();
+    private Dictionary<GameObject, HashSet<Vector3Int>> obstacleOccupiedPositions = new Dictionary<GameObject, HashSet<Vector3Int>>();
+    public int MaxSize
+    {
+        get
+        {
+            return gridSizeX * gridSizeY;
+        }
+    }
 
     void Awake()
     {
@@ -28,14 +36,6 @@ public class AGrid : MonoBehaviour
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         BlockData = GridData.Instance;
         CreateGrid();
-    }
-
-    public int MaxSize
-    {
-        get
-        {
-            return gridSizeX * gridSizeY;
-        }
     }
 
     void CreateGrid()
@@ -50,25 +50,27 @@ public class AGrid : MonoBehaviour
             placerObj.AddComponent<ObjectPlacer>();
         }
 
-        // 먼저 모든 장애물을 찾고 각각의 크기를 체크
-        Dictionary<GameObject, HashSet<Vector3Int>> obstacleOccupiedPositions = new Dictionary<GameObject, HashSet<Vector3Int>>();
-        
+        GenerateNode(worldBottomLeft);
+        CheckOccupiedByNode();
+        ChangeNodeState(worldBottomLeft);
+
+        if (PathManager.Instance != null)
+        {
+            PathManager.Instance.UpdateAllPaths();
+        }
+    }
+    private void GenerateNode(Vector3 standardPos)
+    {
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x + 0.5f) + Vector3.forward * (y + 0.5f);
+                Vector3 worldPoint = standardPos + Vector3.right * (x + 0.5f) + Vector3.forward * (y + 0.5f);
                 worldPoint.y = transform.position.y;
-                Vector3Int gridPosition = new Vector3Int(x - gridSizeX/2, 0, y - gridSizeY/2);
+                Vector3Int gridPosition = new Vector3Int(x - gridSizeX / 2, 0, y - gridSizeY / 2);
 
-                // 각 노드에서 장애물 체크
                 Vector3 checkPoint = worldPoint + Vector3.up * 0.1f;
-                Collider[] obstacles = Physics.OverlapBox(
-                    checkPoint,
-                    new Vector3(0.4f, 0.1f, 0.4f),
-                    Quaternion.identity,
-                    unwalkableMask
-                );
+                Collider[] obstacles = Physics.OverlapBox(checkPoint, new Vector3(0.4f, 0.1f, 0.4f), Quaternion.identity, unwalkableMask);
 
                 foreach (var obstacle in obstacles)
                 {
@@ -80,8 +82,9 @@ public class AGrid : MonoBehaviour
                 }
             }
         }
-
-        // 각 장애물별로 차지하는 모든 노드를 GridData에 등록
+    }
+    private void CheckOccupiedByNode()
+    {
         foreach (var obstacleData in obstacleOccupiedPositions)
         {
             GameObject obstacle = obstacleData.Key;
@@ -92,10 +95,9 @@ public class AGrid : MonoBehaviour
                 ObjectPlacer.Instance.placedGameObjects.Add(obstacle);
                 int index = ObjectPlacer.Instance.placedGameObjects.Count - 1;
 
-                // 장애물이 차지하는 모든 셀을 Vector2Int로 변환
-                Vector3Int basePosition = positions.First(); // 기준점
+                Vector3Int basePosition = positions.First();
                 List<Vector2Int> occupiedCells = new List<Vector2Int>();
-                
+
                 foreach (var pos in positions)
                 {
                     Vector2Int relativePos = new Vector2Int(
@@ -105,37 +107,30 @@ public class AGrid : MonoBehaviour
                     occupiedCells.Add(relativePos);
                 }
 
-                // GridData에 추가
                 GridData.Instance.AddObjectAt(basePosition, occupiedCells, 0, index);
-                Debug.Log($"Added large obstacle at base position ({basePosition.x}, {basePosition.z}) occupying {positions.Count} cells");
             }
         }
-
-        // 노드 배열 생성
+    }
+    private void ChangeNodeState(Vector3 standardPos)
+    {
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x + 0.5f) + Vector3.forward * (y + 0.5f);
+                Vector3 worldPoint = standardPos + Vector3.right * (x + 0.5f) + Vector3.forward * (y + 0.5f);
                 worldPoint.y = transform.position.y;
-                Vector3Int gridPosition = new Vector3Int(x - gridSizeX/2, 0, y - gridSizeY/2);
-                
+                Vector3Int gridPosition = new Vector3Int(x - gridSizeX / 2, 0, y - gridSizeY / 2);
+
                 bool isBlocked = GridData.Instance.IsPositionOccupied(gridPosition);
                 bool walkable = !isBlocked;
                 nodeArray[x, y] = new ANode(walkable, worldPoint, x, y);
             }
         }
 
-        // 경로 재계산
-        if (PathManager.Instance != null)
-        {
-            PathManager.Instance.UpdateAllPaths();
-        }
     }
 
-
     /// <summary>
-    /// 인접 노트탐색
+    /// 한칸씩 경로를 계산하도록 유도
     /// </summary>
     /// <param name="node"></param>
     /// <returns></returns>
@@ -145,14 +140,14 @@ public class AGrid : MonoBehaviour
 
         Vector2Int[] directions = new Vector2Int[]
         {
-            new Vector2Int(0, 1),   // 상
-            new Vector2Int(1, 1),   // 우상
-            new Vector2Int(1, 0),   // 우
-            new Vector2Int(1, -1),  // 우하
-            new Vector2Int(0, -1),  // 하
-            new Vector2Int(-1, -1), // 좌하
-            new Vector2Int(-1, 0),  // 좌
-            new Vector2Int(-1, 1)   // 좌상
+            new Vector2Int(0, 1),   
+            new Vector2Int(1, 1),   
+            new Vector2Int(1, 0),   
+            new Vector2Int(1, -1),  
+            new Vector2Int(0, -1),  
+            new Vector2Int(-1, -1), 
+            new Vector2Int(-1, 0),  
+            new Vector2Int(-1, 1)   
         };
 
         foreach (var dir in directions)
@@ -162,12 +157,10 @@ public class AGrid : MonoBehaviour
 
             if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
             {
-                // 대각선 이동의 경우 양쪽 노드가 모두 walkable인지 확인
                 if (Mathf.Abs(dir.x) == 1 && Mathf.Abs(dir.y) == 1)
                 {
                     bool canMoveDiagonally = true;
-                    
-                    // 수평 이동 가능 확인
+
                     int horizontalX = node.gridX + dir.x;
                     int horizontalY = node.gridY;
                     if (horizontalX >= 0 && horizontalX < gridSizeX)
@@ -176,7 +169,6 @@ public class AGrid : MonoBehaviour
                             canMoveDiagonally = false;
                     }
 
-                    // 수직 이동 가능 확인
                     int verticalX = node.gridX;
                     int verticalY = node.gridY + dir.y;
                     if (verticalY >= 0 && verticalY < gridSizeY)
@@ -208,24 +200,6 @@ public class AGrid : MonoBehaviour
         return nodeArray[x, y];
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
-        if (nodeArray != null && displayGridGizmos)
-        {
-            foreach (ANode n in nodeArray)
-            {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.1f);
-            }
-        }
-    }
-
-    public void UpdateGrid()
-    {
-        CreateGrid();
-    }
-
     public void UpdateNode(Vector3Int position, bool isBlocked)
     {
         int gridX = position.x + gridSizeX / 2;
@@ -236,29 +210,10 @@ public class AGrid : MonoBehaviour
             bool previousState = nodeArray[gridX, gridY].walkable;
             nodeArray[gridX, gridY].walkable = !isBlocked;
             
-            // 노드 상태 변경 로깅 강화
-            Debug.Log($"Node at ({gridX}, {gridY}) - Previous state: {previousState}, New state: {!isBlocked}");
-            
-            // 임시 상태인지 확인
-            if (temporaryNodeStates.ContainsKey(position))
-            {
-                Debug.Log($"Warning: Updating node that has temporary state at ({gridX}, {gridY})");
-            }
-
-            // GridData와 상태 비교
             bool gridDataOccupied = GridData.Instance.IsPositionOccupied(position);
-            if (gridDataOccupied != isBlocked)
-            {
-                Debug.LogWarning($"State mismatch at ({gridX}, {gridY}): GridData: {gridDataOccupied}, Node blocked: {isBlocked}");
-            }
-        }
-        else
-        {
-            Debug.LogError($"Attempted to update node outside grid bounds at ({gridX}, {gridY}). Original position: ({position.x}, {position.z})");
         }
     }
 
-    // 노드의 임시 상태 설정
     public void SetTemporaryNodeState(Vector3Int position, bool walkable)
     {
         int gridX = position.x + gridSizeX / 2;
@@ -270,16 +225,10 @@ public class AGrid : MonoBehaviour
             {
                 temporaryNodeStates[position] = nodeArray[gridX, gridY].walkable;
                 nodeArray[gridX, gridY].walkable = walkable;
-                Debug.Log($"Set temporary state at ({gridX}, {gridY}): {walkable}");
-            }
-            else
-            {
-                Debug.LogWarning($"Attempted to set temporary state for node that already has one at ({gridX}, {gridY})");
             }
         }
     }
 
-    // 임시 상태 복원
     public void RestoreTemporaryNodes()
     {
         foreach (var kvp in temporaryNodeStates)
@@ -290,53 +239,11 @@ public class AGrid : MonoBehaviour
             if (gridX >= 0 && gridX < gridSizeX && gridY >= 0 && gridY < gridSizeY)
             {
                 nodeArray[gridX, gridY].walkable = kvp.Value;
-                Debug.Log($"Restored node at ({gridX}, {gridY}) to {kvp.Value}");
             }
         }
         
         int count = temporaryNodeStates.Count;
         temporaryNodeStates.Clear();
-        Debug.Log($"Restored {count} temporary nodes");
-    }
-
-    private bool CheckPathValidity(Vector3Int gridPosition, List<Vector2Int> cells)
-    {
-        // 임시로 노드들을 막음
-        Dictionary<ANode, bool> originalStates = new Dictionary<ANode, bool>();
-        foreach (var cell in cells)
-        {
-            Vector3Int blockPos = new Vector3Int(
-                gridPosition.x + cell.x,
-                gridPosition.y,
-                gridPosition.z + cell.y
-            );
-            ANode node = ANodeFromWorldPoint(new Vector3(blockPos.x, 0, blockPos.z));
-            if (node != null && !originalStates.ContainsKey(node))
-            {
-                originalStates[node] = node.walkable;
-                node.walkable = false;
-            }
-        }
-
-        // 프리뷰 경로 업데이트 전에 모든 스폰 포인트에서 경로 체크
-        bool anyValidPath = false;
-        foreach (var spawnPoint in PathManager.Instance.GetSpawnPoints())
-        {
-            PathManager.Instance.CheckPreviewPath();
-            if (PathManager.Instance.HasValidPath)
-            {
-                anyValidPath = true;
-                break;
-            }
-        }
-
-        // 노드 상태 복원
-        foreach (var pair in originalStates)
-        {
-            pair.Key.walkable = pair.Value;
-        }
-
-        return anyValidPath;
     }
 
     public void ResetNodes()
@@ -367,15 +274,26 @@ public class AGrid : MonoBehaviour
         return new Vector3(x + (nodeRadius), 0, z + (nodeRadius));
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+        if (nodeArray != null && displayGridGizmos)
+        {
+            foreach (ANode n in nodeArray)
+            {
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * 0.1f);
+            }
+        }
+    }
+
     public void Clear()
     {
-        // GridData 초기화
         if (BlockData != null)
         {
             BlockData.Clear();
         }
 
-        // 노드 배열 초기화
         if (nodeArray != null)
         {
             for (int x = 0; x < gridSizeX; x++)
@@ -391,13 +309,11 @@ public class AGrid : MonoBehaviour
             }
         }
 
-        // 장애물 위치 리스트 초기화
         obstaclePositions.Clear();
+        obstacleOccupiedPositions.Clear();
 
-        // 그리드 재생성
         CreateGrid();
 
-        // 경로 업데이트 요청
         if (PathManager.Instance != null)
         {
             PathManager.Instance.UpdateAllPaths();

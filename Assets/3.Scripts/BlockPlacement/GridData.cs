@@ -15,7 +15,6 @@ public class GridData
     }
 
     private Dictionary<Vector3Int, PlacementData> placedObjects = new();
-    private ObjectPlacer placer;
 
     public void AddObjectAt(Vector3Int gridPosition, List<Vector2Int> occupiedCells, int ID, int placedObjectIndex, int floor = 0)
     {
@@ -100,12 +99,6 @@ public class GridData
                 placedObjects.Remove(pos);
             }
         }
-
-        // 포탑은 objectplacer에 등록되지 않는데 해당 인덱스로 제거중임
-        //if (data.PlacedObjectIndex >= 0)
-        //{
-        //    ObjectPlacer.Instance?.RemoveObjectAt(data.PlacedObjectIndex);
-        //}
     }
 
     public PlacementData GetPlacementData(Vector3Int gridPosition)
@@ -133,7 +126,6 @@ public class GridData
     public void Clear()
     {
         placedObjects.Clear();
-        placer = null;
         instance = null;
     }
 }

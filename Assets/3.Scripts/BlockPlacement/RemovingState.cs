@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class RemovingState : IBuildingState
 {
-    private int gameObjectIndex = -1;
     Grid grid;
     PreviewSystem previewSystem;
     GridData BlockData;
@@ -40,7 +39,6 @@ public class RemovingState : IBuildingState
             return;
         }
 
-        GridData selectedData = null;
         PlacementData data = GridData.Instance.GetPlacementData(gridPosition);
         
         if (data != null)

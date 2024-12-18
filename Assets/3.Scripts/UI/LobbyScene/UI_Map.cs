@@ -29,7 +29,6 @@ public class UI_Map : MonoBehaviour
         Altar.onClick.AddListener(EnterAltar);
         Stage6.onClick.AddListener(LoadStage6);
 
-        // 인디케이터 컴포넌트 가져오기
         indicatorComponent = StageIndicator.GetComponent<UI_StageIndicator>();
         if (indicatorComponent == null)
         {
@@ -41,7 +40,6 @@ public class UI_Map : MonoBehaviour
     {
         int count = GameManager.Instance.clearStage;
         
-        // 현재 타겟 버튼 설정
         switch (count)
         {
             case 0:
@@ -67,7 +65,6 @@ public class UI_Map : MonoBehaviour
                 break;
         }
 
-        // 초기 위치 설정
         if (currentTargetButton != null)
         {
             indicatorComponent.SetPosition(currentTargetButton.transform.position + offset);
@@ -76,7 +73,6 @@ public class UI_Map : MonoBehaviour
 
     private void Update()
     {
-        // 스크롤 시에도 인디케이터가 버튼을 따라다니도록 매 프레임 위치 업데이트
         if (currentTargetButton != null)
         {
             indicatorComponent.SetPosition(currentTargetButton.transform.position + offset);
@@ -89,7 +85,6 @@ public class UI_Map : MonoBehaviour
         if(GameManager.Instance.clearStage == 0)
         {
             FadeManager.Instance.LoadScene("AcademyScene");
-            //SceneManager.LoadScene("AcademyScene");
         }
     }
 
@@ -99,7 +94,6 @@ public class UI_Map : MonoBehaviour
         if (GameManager.Instance.clearStage == 1)
         {
             FadeManager.Instance.LoadScene("InGameScene1");
-            //SceneManager.LoadScene("InGameScene3");
         }
     }
     private void LoadStage2()
@@ -108,7 +102,6 @@ public class UI_Map : MonoBehaviour
         if (GameManager.Instance.clearStage == 2)
         {
             FadeManager.Instance.LoadScene("InGameScene2");
-            //SceneManager.LoadScene("InGameScene3");
         }
     }
     private void LoadStage3()
@@ -117,7 +110,6 @@ public class UI_Map : MonoBehaviour
         if (GameManager.Instance.clearStage == 3)
         {
             FadeManager.Instance.LoadScene("InGameScene3");
-            //SceneManager.LoadScene("InGameScene3");
         }
     }
     private void LoadStage4()
@@ -126,8 +118,6 @@ public class UI_Map : MonoBehaviour
         if (GameManager.Instance.clearStage == 4)
         {
             FadeManager.Instance.LoadScene("InGameScene4");
-
-            //SceneManager.LoadScene("InGameScene3");
         }
     }
     private void EnterAltar()
@@ -136,7 +126,6 @@ public class UI_Map : MonoBehaviour
         if (GameManager.Instance.clearStage == 5)
         {
             FadeManager.Instance.LoadScene("AltarScene");
-            //SceneManager.LoadScene("InGameScene3");
         }
     }
     private void LoadStage6()
@@ -145,7 +134,6 @@ public class UI_Map : MonoBehaviour
         if (GameManager.Instance.clearStage == 6)
         {
             FadeManager.Instance.LoadScene("InGameScene5");
-            //SceneManager.LoadScene("InGameScene3");
         }
     }
 }

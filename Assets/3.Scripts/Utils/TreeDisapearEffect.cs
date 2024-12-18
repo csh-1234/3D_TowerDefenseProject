@@ -12,6 +12,4 @@ public class TreeDisapearEffect : MonoBehaviour
     {
         effect = Resources.Load<ParticleSystem>("Effects/TreeEffect");
     }
-
-    // OnTriggerEnter 제거 - 이제 PlacementState에서 직접 처리
 }

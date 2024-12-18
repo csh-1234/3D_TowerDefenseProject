@@ -62,7 +62,6 @@ public class UI_IngameScene : MonoBehaviour
 
             if (!string.IsNullOrEmpty(GameManager.Instance.EquipTowerList[i]))
             {
-                // 해당 인덱스에 타워가 있는 경우
                 if (i < 4)
                 {
                     cardInstance = Instantiate(Resources.Load<GameObject>($"InGameTowerCard/{GameManager.Instance.EquipTowerList[i]}"), TowerCardLocation1);
@@ -74,7 +73,6 @@ public class UI_IngameScene : MonoBehaviour
             }
             else
             {
-                // 해당 인덱스에 타워가 없는 경우 빈 카드
                 if (i < 4)
                 {
                     cardInstance = Instantiate(EmptyCard, TowerCardLocation1);

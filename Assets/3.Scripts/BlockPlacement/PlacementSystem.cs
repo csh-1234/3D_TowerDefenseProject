@@ -139,7 +139,6 @@ public class PlacementSystem : MonoBehaviour
         bool pathValid = false;
         bool checkComplete = false;
 
-        // 임시 노드 상태 설정
         placementState.SetTemporaryNodes(gridPosition, false);
 
         PathManager.Instance.UpdatePreviewPathWithDelay((isValid) => {
@@ -204,10 +203,8 @@ public class PlacementSystem : MonoBehaviour
 
     private IEnumerator UpdatePathsAfterDelay()
     {
-        // 노드 상태가 완전히 업데이트될 때까지 잠시 대기
         yield return new WaitForEndOfFrame();
 
-        // 경로 업데이트
         if (PathManager.Instance != null)
         {
             PathManager.Instance.UpdateAllPaths();

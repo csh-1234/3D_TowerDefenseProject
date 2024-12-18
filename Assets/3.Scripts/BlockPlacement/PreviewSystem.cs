@@ -80,7 +80,7 @@ public class PreviewSystem : MonoBehaviour
         {
             GameObject newCell = Instantiate(cellIndicator, cursorParent.transform);
             newCell.transform.localPosition = new Vector3(cell.x, 0, cell.y);
-            newCell.transform.localScale = Vector3.one; //  1x1 ũ
+            newCell.transform.localScale = Vector3.one; //  1x1 크
             newCell.SetActive(true);
         }
     }
@@ -196,27 +196,8 @@ public class PreviewSystem : MonoBehaviour
         ApplyFeedbackToCursor(false);
     }
 
-    private List<Vector2Int> GetCurrentOccupiedCells()
-    {
-        if (currentOccupiedCells == null)
-            return new List<Vector2Int>() { Vector2Int.zero };
-
-        List<Vector2Int> rotatedCells = new List<Vector2Int>();
-        foreach (var cell in currentOccupiedCells)
-        {
-            var rotated = cell;
-            for (int i = 0; i < currentRotation; i++)
-            {
-                rotated = new Vector2Int(rotated.y, -rotated.x);
-            }
-            rotatedCells.Add(rotated);
-        }
-        return rotatedCells;
-    }
-
     public void UpdateRotation(int rotationIndex)
     {
-        // 타워 프리뷰 회전 소리
         SoundManager.Instance.Play("TowerPreviewRotationSound", SoundManager.Sound.Effect);
         currentRotation = rotationIndex;
         if (previewObject != null)

@@ -148,8 +148,6 @@ public class DroneController : MonoBehaviour
                );
 
             muzzleEffect?.Initialize();
-            //  GameObject _MuzzlEffect = Instantiate(projectileEffect, muzzlePosition.position, muzzlePosition.transform.rotation);
-            //Destroy(_MuzzlEffect, _MuzzlEffect.GetComponent<ParticleSystem>().main.duration);
             lastShootTime = Time.time;
         }
     }

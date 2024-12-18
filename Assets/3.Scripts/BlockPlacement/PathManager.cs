@@ -123,21 +123,18 @@ public class PathManager : MonoBehaviour
 
     public void CheckPreviewPath()
     {
-        // 모든 PathData의 IsValid를 초기화
         foreach (var data in pathDataMap.Values)
         {
             data.IsValid = false;
             data.CurrentPath = null;
         }
 
-        // 모든 유닛의 프리뷰 초기화 및 활성화
         foreach (var spawnPoint in spawnPoints)
         {
             if (spawnPoint != null && pathUnits.TryGetValue(spawnPoint, out AUnit unit))
             {
                 unit.ShowPreviewPath(true);
                 unit.ShowActualPath(true);
-                // 각 유닛의 프리뷰 경로를 동시에 계산
                 unit.CheckPreviewPath();
             }
         }
@@ -227,16 +224,14 @@ public class PathManager : MonoBehaviour
     public bool HasValidPath { get; private set; }
     public void OnPathCalculated(Vector3[] path, bool success, bool isPreview = false)
     {
-        if (!isPreview) // 실제 경로인 경우
+        if (!isPreview)
         {
             if (success && path != null)
             {
-                // 모든 스��� 포인트에 대해 경로 업데이트
                 foreach (var spawnPoint in spawnPoints)
                 {
                     if (spawnPoint != null && pathUnits.TryGetValue(spawnPoint, out AUnit unit))
                     {
-                        // 현재 경로의 시작점이 이 유닛의 위치와 일치하는지 확인
                         float distance = Vector3.Distance(unit.transform.position, path[0]);
                         if (distance < 0.1f)
                         {
@@ -252,11 +247,10 @@ public class PathManager : MonoBehaviour
             HasValidPath = success;
             NotifyValidityChange(success);
         }
-        else // 프리뷰 경로인 경우
+        else 
         {
             if (success && path != null)
             {
-                // 모든 스폰 포인트에 대해 프리뷰 경로 업데이트
                 foreach (var spawnPoint in spawnPoints)
                 {
                     if (spawnPoint != null && pathUnits.TryGetValue(spawnPoint, out AUnit unit))
@@ -271,7 +265,6 @@ public class PathManager : MonoBehaviour
                     }
                 }
             }
-            // 하나라도 유효한 경로가 있으면 전체 경로가 유효한 것으로 간주
             HasValidPath = pathDataMap.Values.Any(data => data.IsValid);
         }
     }
@@ -296,28 +289,9 @@ public class PathManager : MonoBehaviour
         if (actualPaths.ContainsKey(spawnPoint))
             return actualPaths[spawnPoint];
             
-        // 실제 경로가 없으면 현재 경로 반환
         return GetCurrentPath(spawnPoint);
     }
 
-    public void CheckPreviewPathForSpawnPoint(Transform spawnPoint)
-    {
-        if (pathUnits.TryGetValue(spawnPoint, out AUnit unit))
-        {
-            unit.ShowPreviewPath(true);
-            unit.ShowActualPath(true);
-            unit.CheckPreviewPath();
-        }
-    }
-
-    public bool HasValidPathFromSpawnPoint(Transform spawnPoint)
-    {
-        if (pathDataMap.TryGetValue(spawnPoint, out PathData data))
-        {
-            return data.IsValid && data.CurrentPath != null && data.CurrentPath.Length > 0;
-        }
-        return false;
-    }
 
     public void Clear()
     {
@@ -367,14 +341,10 @@ public class PathManager : MonoBehaviour
             GameObject unitObj = new GameObject($"PathUnit_{spawnPoint.name}");
             AUnit unit = unitObj.AddComponent<AUnit>();
             
-            // 각각 다른 머티리얼 설정
             unit.SetLineMaterials(actualPathMaterial, previewPathMaterial);
-            
-            // 위치와 타겟 설정
             unit.transform.position = spawnPoint.position;
             unit.SetTarget(targetPoint);
 
-            // PathData 생성 및 저장
             PathData pathData = new PathData
             {
                 PathUnit = unit,
@@ -385,7 +355,6 @@ public class PathManager : MonoBehaviour
             pathUnits.Add(spawnPoint, unit);
             pathDataMap.Add(spawnPoint, pathData);
 
-            // 경로 업데이트 이벤트 구독
             unit.OnPathUpdated += (newPath, success) =>
             {
                 if (success && newPath != null)
@@ -405,7 +374,6 @@ public class PathManager : MonoBehaviour
         spawnPoints = new List<Transform>(newSpawnPoints);
         targetPoint = newTargetPoint;
         
-        // 기존 유닛들 정리
         foreach (var unit in pathUnits.Values)
         {
             if (unit != null)
@@ -416,7 +384,6 @@ public class PathManager : MonoBehaviour
         pathUnits.Clear();
         pathDataMap.Clear();
 
-        // 새로운 포인트로 초기화
         InitializePathUnits();
     }
 

@@ -19,10 +19,6 @@ public class CameraMove : MonoBehaviour
         StartCoroutine(SetDelay());
     }
 
-    /// <summary>
-    /// 씬 전환시 클릭 방지
-    /// </summary>
-    /// <returns></returns>
     private IEnumerator SetDelay()
     {
         yield return new WaitForSeconds(1f);

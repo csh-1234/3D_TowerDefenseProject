@@ -54,13 +54,11 @@ public class UI_ButtonDifficultyButton : UI_EventHandler
     }
     private void OnDeActive()
     {
-        //SoundManager.Instance.Play("Click18", SoundManager.Sound.Effect);
         transform.localScale = originalScale;
     }
 
     private void OnEnter()
     {
-        //포커스 소리
         SoundManager.Instance.Play("Click03", SoundManager.Sound.Effect);
         currentSequence?.Kill();
         currentSequence = DOTween.Sequence();

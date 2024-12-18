@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class MissileTower : Tower
 {
-    [Header("타워 레벨효과")]
+    [Header("????덈꺼?④낵")]
     [SerializeField] private List<GameObject> projectiles;
     [SerializeField] private List<GameObject> muzzleEffects;
     [SerializeField] private List<GameObject> HitEffects;
 
-    [Header("발사 위치")]
-    [SerializeField] private Transform leftMuzzle;   // Inspector에서 할당
-    [SerializeField] private Transform rightMuzzle;  // Inspector에서 할당
-    private bool useLeftMuzzle = true;  // 왼쪽/오른쪽 발사 위치 번갈아가며 사용
+    [Header("諛쒖궗 ?꾩튂")]
+    [SerializeField] private Transform leftMuzzle;   
+    [SerializeField] private Transform rightMuzzle;  
+    private bool useLeftMuzzle = true;  
 
     private GameObject currentProjectile;
     private GameObject currentMuzzleEffect;
@@ -126,13 +126,12 @@ public class MissileTower : Tower
         if (target == null || !target.gameObject.activeSelf || target.IsDead)
             return;
 
-        // 현재 사용할 발사 위치 선택
         Transform currentMuzzle = useLeftMuzzle ? leftMuzzle : rightMuzzle;
-        useLeftMuzzle = !useLeftMuzzle;  // 다음 발사를 위해 전환
+        useLeftMuzzle = !useLeftMuzzle;  
 
         Projectile projectile = ObjectManager.Instance.Spawn<Projectile>(
             currentProjectile,
-            currentMuzzle.position  // 선택된 발사 위치 사용
+            currentMuzzle.position  
         );
 
         if (projectile != null)
@@ -146,7 +145,7 @@ public class MissileTower : Tower
 
             PooledParticle muzzleEffect = ObjectManager.Instance.Spawn<PooledParticle>(
                 currentMuzzleEffect,
-                currentMuzzle.position,  // 이펙트도 같은 위치에서 생성
+                currentMuzzle.position, 
                 TowerHead.transform.rotation
             );
             muzzleEffect?.Initialize();

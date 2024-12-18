@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ChainLightningTower : Tower
 {
-    public int ChainCount = 3;  //체인 횟수
-    public float ChainRange = 5f; //다음 타겟 탐지거리
+    public int ChainCount = 3;  
+    public float ChainRange = 5f; 
     
     private int originalDamage;
     private float originalRange;
@@ -82,7 +82,6 @@ public class ChainLightningTower : Tower
             {
                 yield return new WaitForSeconds(0.1f);
                 CreateLightningEffect(target.position, nextTarget.position);
-                //체인 후 데미지 70%, 체인카운트 -1
                 StartCoroutine(ChainLightning(nextTarget, Mathf.RoundToInt(damage * 0.7f), remainingChains - 1));
             }
         }
@@ -108,8 +107,6 @@ public class ChainLightningTower : Tower
         }
         return closestTarget;
     }
-
-    //지금 맞은 몬스터와 타겟 사이에 라이트닝 생성
     private void CreateLightningEffect(Vector3 start, Vector3 end)
     {
         LightningEffect lightning = ObjectManager.Instance.Spawn<LightningEffect>(currentEffect, transform.position);
@@ -122,13 +119,9 @@ public class ChainLightningTower : Tower
         switch (Level)
         {
             case 1:
-                //UnityEngine.Color color = new Color32(240, 255, 83, 255);
-                //effect.lightningColor = color;
                 currentEffect = lightningEffectPrefabs[Level - 1];
                 break;
             case 2:
-                //color = new Color32(84, 108, 255, 255);
-                //effect.lightningColor = color;
                 currentEffect = lightningEffectPrefabs[Level - 1];
                 ChainCount += 4;
                 break;
@@ -138,26 +131,20 @@ public class ChainLightningTower : Tower
                 {
                     Damage = baseAttackDamage;
                 }
-                //Damage += 2;
                 FireRate *= 0.5f;
                 currentEffect = lightningEffectPrefabs[Level - 1];  
-                //color = new Color32(255, 83, 243, 255);
-                //effect.lightningColor = color;
                 break;
         }
-        // 버프가 있다면 재적용
+
         if (originalStats.Count > 0)
         {
-            // 현재 적용된 모든 버프를 저장
             var currentBuffs = new List<BuffField>(originalStats.Keys);
 
-            // 모든 버프 제거
             foreach (var buff in currentBuffs)
             {
                 RemoveBuff(buff);
             }
 
-            // 버프 재적용
             foreach (var buff in currentBuffs)
             {
                 ApplyBuff(buff);

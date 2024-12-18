@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-
 public class Monster : MonoBehaviour
 {
     [SerializeField]
@@ -33,20 +32,9 @@ public class Monster : MonoBehaviour
     private Vector3 moveDirection;
     private Transform spawnPoint;
     public bool IsSpawnDirect = false;
-    // 직접 소환할 경우 인스펙터에서 할당
     public Transform spawnPos; 
 
     public event Action OnDead;
-
-    //private void Awake()
-    //{
-    //    //프리팹 스탯을 적용하기 위한 체력스탯
-    //    hp *= GameManager.Instance.Difficulty;
-    //    maxHp = hp;
-    //    maxSpeed = speed;
-    //    maxDamage = damage;
-    //    maxGold = gold;
-    //}
 
     public void Initialize(Transform spawn)
     {
@@ -133,10 +121,10 @@ public class Monster : MonoBehaviour
         Vector3 targetDirection = (currentTargetPosition - transform.position).normalized;
         moveDirection = Vector3.Lerp(moveDirection, targetDirection, Time.deltaTime * 10);
 
-        // 이동
+        // ??猷?
         transform.position += moveDirection * speed * Time.deltaTime;
 
-        // 회전 설정
+        // ???읈 ??쇱젟
         if (moveDirection != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -213,37 +201,31 @@ public class Monster : MonoBehaviour
     }
     private void OnEnable()
     {
-        // 상태 초기화
         IsDead = false;
         isMoving = false;
         currentWaypointIndex = 0;
         spawnPoint = null;
         IsSpawnDirect = false;
 
-        // 프리팹에 설정된 초기값 복원
         hp = maxHp;
         speed = maxSpeed;
         damage = maxDamage;
         gold = maxGold;
 
-        // 난이도 적용 (체력만)
         hp *= GameManager.Instance.Difficulty;
-        maxHp = hp;  // 난이도가 적용된 체력을 최대체력으로 설정
+        maxHp = hp;  
     }
 
     private void OnDisable()
     {
-        // 이벤트 해제
         if (PathManager.Instance != null)
         {
             PathManager.Instance.OnActualPathUpdated -= OnActualPathUpdated;
         }
     }
 
-    // Awake에서 최대값 초기화 추가
     private void Awake()
     {
-        // 프리팹의 초기값을 최대값으로 저장
         maxHp = hp;
         maxSpeed = speed;
         maxDamage = damage;

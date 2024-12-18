@@ -20,7 +20,6 @@ public class UI_DifficultySelect : MonoBehaviour
 
     private void EnterCasual()
     {
-        //버튼 클릭 소리
         SoundManager.Instance.Play("Click18", SoundManager.Sound.Effect);
         FadeManager.Instance.LoadScene("LobbyScene");
         GameManager.Instance.Difficulty = 1;
@@ -30,14 +29,12 @@ public class UI_DifficultySelect : MonoBehaviour
         SoundManager.Instance.Play("Click18", SoundManager.Sound.Effect);
         FadeManager.Instance.LoadScene("LobbyScene");
         GameManager.Instance.Difficulty = 2;
-        //SceneManager.LoadScene("LobbyScene");
     }
     private void EnterHeroic()
     {
         SoundManager.Instance.Play("Click18", SoundManager.Sound.Effect);
         FadeManager.Instance.LoadScene("LobbyScene");
         GameManager.Instance.Difficulty = 3;
-        //SceneManager.LoadScene("LobbyScene");
     }
     private void EnterBackToTitle()
     {

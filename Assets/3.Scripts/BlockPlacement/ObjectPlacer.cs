@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class ObjectPlacer : MonoBehaviour
 {
+    // 설치된 장애물들을 모두 참조하고있는 리스트
+    public List<GameObject> placedGameObjects = new List<GameObject>();
+
     private static ObjectPlacer instance;
 
     public static ObjectPlacer Instance
@@ -25,9 +28,6 @@ public class ObjectPlacer : MonoBehaviour
             return instance;
         }
     }
-
-    [SerializeField]
-    public List<GameObject> placedGameObjects = new List<GameObject>();
 
     private void Awake()
     {

@@ -52,7 +52,6 @@ public class UI_AcademyPanel : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
-        // 배경음악 재생
         SoundManager.Instance.Play("Academy", SoundManager.Sound.Bgm);
 
         RandomTetrisCard();

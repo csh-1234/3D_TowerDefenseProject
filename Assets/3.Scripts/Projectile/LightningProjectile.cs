@@ -15,15 +15,11 @@ public class LightningProjectile : Projectile
     {
         if (other.CompareTag("Monster"))
         {
-            // 첫 번째 타겟에 데미지
             Monster monster = other.GetComponent<Monster>();
             if (monster != null)
             {
                 monster.TakeDamage(Damage);
-                // 첫 번째 라이트닝 이펙트 (발사체에서 첫 타겟까지)
                 CreateLightningEffect(transform.position, other.transform.position);
-                
-                // 체인 라이트닝 시작
                 ChainToNextTarget(other.transform, Damage, ChainCount - 1);
             }
             
@@ -38,15 +34,12 @@ public class LightningProjectile : Projectile
         Transform nextTarget = FindNextTarget(currentTarget.position, currentTarget);
         if (nextTarget != null)
         {
-            // 다음 타겟에 데미지
             Monster monster = nextTarget.GetComponent<Monster>();
             if (monster != null)
             {
                 monster.TakeDamage(Mathf.RoundToInt(damage * 0.7f));
-                // 이전 타겟에서 다음 타겟까지 라이트닝 이펙트
                 CreateLightningEffect(currentTarget.position, nextTarget.position);
                 
-                // 재귀적으로 다음 체인 실행
                 ChainToNextTarget(nextTarget, Mathf.RoundToInt(damage * 0.7f), remainingChains - 1);
             }
         }

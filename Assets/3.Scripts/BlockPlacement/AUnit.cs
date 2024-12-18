@@ -12,9 +12,9 @@ public class AUnit : MonoBehaviour
     private LineRenderer previewPathRenderer;
     
     [SerializeField]
-    private Material actualPathMaterial;  // 실제 경로용 머티리얼
+    private Material actualPathMaterial;  
     [SerializeField]
-    private Material previewPathMaterial; // 프리뷰 경로용 머티리얼
+    private Material previewPathMaterial; 
 
     public event Action<Vector3[], bool> OnPathUpdated;
 
@@ -40,7 +40,6 @@ public class AUnit : MonoBehaviour
 
     private void InitializeLineRenderers()
     {
-        // 실제 경로 LineRenderer
         if (actualPathRenderer == null)
         {
             GameObject actualPathObj = new GameObject("ActualPathRenderer");
@@ -49,7 +48,6 @@ public class AUnit : MonoBehaviour
             SetupLineRenderer(actualPathRenderer, actualPathMaterial);
         }
 
-        // 프리뷰 경로 LineRenderer
         if (previewPathRenderer == null)
         {
             GameObject previewObj = new GameObject("PreviewPathRenderer");

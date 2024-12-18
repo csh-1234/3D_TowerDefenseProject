@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class BuffField : MonoBehaviour
 {
-    [Header("버프 효과")]
     public float damageMultiplier = 2f;
     public float rangeMultiplier = 2f;
 
-    [Header("감지 설정")]
     public float checkInterval = 1f;
     public float checkHeight = 2f;
     public float heightOffset = 0.1f;
@@ -71,7 +69,6 @@ public class BuffField : MonoBehaviour
                     }
                 }
 
-                // 타워 버프 상태 업데이트
                 if (newTower != currentBuffedTower)
                 {
                     if (currentBuffedTower != null)
@@ -124,7 +121,6 @@ public class BuffField : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            // 체크 영역 표시
             Gizmos.color = Color.yellow;
             Vector3 checkCenter = new Vector3(
                 transform.position.x,
@@ -133,11 +129,9 @@ public class BuffField : MonoBehaviour
             );
             Gizmos.DrawWireCube(checkCenter, checkSize);
 
-            // 타워 감지 범위 표시
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, checkSize.x/2);
 
-            // 현재 버프 중인 타워와의 연결선 표시
             if (currentBuffedTower != null)
             {
                 Gizmos.color = Color.green;

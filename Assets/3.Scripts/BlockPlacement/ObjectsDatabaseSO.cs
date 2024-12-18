@@ -9,10 +9,10 @@ public class ObjectsDatabaseSO : ScriptableObject
     public List<ObjectData> objectsData;
 
     public const int BLOCK_ID_START = 0;
-    public const int BLOCK_ID_END = 100;    // 블럭 ID: 0~100
+    public const int BLOCK_ID_END = 100;    
 
     public const int TOWER_ID_START = 101;
-    public const int TOWER_ID_END = 200;    // 포탑 ID: 101 ~ 200
+    public const int TOWER_ID_END = 200;    
 
     public bool IsBlock(int ID)
     {
@@ -45,7 +45,6 @@ public class ObjectData
         List<Vector2Int> rotatedCells = new List<Vector2Int>();
         foreach (var cell in OccupiedCells)
         {
-            // 시계방향 90도 회전 (rotationIndex 횟수만큼)
             var rotated = cell;
             for (int i = 0; i < rotationIndex; i++)
             {

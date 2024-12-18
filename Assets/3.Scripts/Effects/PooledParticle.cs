@@ -11,7 +11,6 @@ public class PooledParticle : MonoBehaviour
 
         particleSystem.Play();
         
-        // 파티클 재생이 끝나면 풀로 반환
         float duration = particleSystem.main.duration;
         Invoke("ReturnToPool", duration);
     }

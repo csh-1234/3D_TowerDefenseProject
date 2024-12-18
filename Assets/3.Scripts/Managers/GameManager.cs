@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //재시작시 게임매니저 초기화 메서드
     public void Clear()
     {
         clearStage = 0;
@@ -110,7 +109,6 @@ public class GameManager : MonoBehaviour
         PlacedTowerList = new List<Tower>();
         tooltipCount = false;
 
-    //각 매니저들 초기화
     GridData.Instance.Clear();
         PathManager.Instance.Clear();
         ObjectPlacer.Instance.Clear();
@@ -149,7 +147,7 @@ public class GameManager : MonoBehaviour
         HandTetrisList = new List<GameObject>();
         PlacedTowerList = new List<Tower>();
 
-        //각 매니저들 초기화
+        //媛?留ㅻ땲???珥덇린??
         GridData.Instance.Clear();
         PathManager.Instance.Clear();
         ObjectPlacer.Instance.Clear();

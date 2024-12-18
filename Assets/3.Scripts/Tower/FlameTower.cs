@@ -36,15 +36,8 @@ public class FlameTower: Tower
 
     public override void ApplyBuff(BuffField buff)
     {
-        //if (!IsBuffed)  // 버프가 처음 적용될 때만 원본 값 저장
-        //{
-        //    originalDamage = Damage;
-        //    originalRange = Range;
-        //}
-        
         base.ApplyBuff(buff);
         
-        // 화염 발사체에도 버프 적용
         if (currentFlameProjectile != null)
         {
             FlameProjectile proj = currentFlameProjectile.GetComponent<FlameProjectile>();
@@ -59,7 +52,6 @@ public class FlameTower: Tower
     {
         base.RemoveBuff(buff);
         
-        // 화염 발사체 데미지 원래대로 복구
         if (currentFlameProjectile != null)
         {
             FlameProjectile proj = currentFlameProjectile.GetComponent<FlameProjectile>();
@@ -68,13 +60,6 @@ public class FlameTower: Tower
                 proj.Damage = originalDamage;
             }
         }
-
-        //// 버프가 모두 제거되면 원본 값으로 복구
-        //if (!IsBuffed)
-        //{
-        //    Damage = originalDamage;
-        //    Range = originalRange;
-        //}
     }
 
     protected override IEnumerator Attack()
@@ -85,7 +70,7 @@ public class FlameTower: Tower
             {
                 currentFlameProjectile.SetActive(true);
                 FlameProjectile proj = currentFlameProjectile.GetComponent<FlameProjectile>();
-                proj.Damage = this.Damage;  // 현재 타워의 데미지 적용
+                proj.Damage = this.Damage; 
                 proj.IsTargeting = this.IsTargeting;
                 proj.Target = this.CurrentTarget;
                 yield return new WaitForSeconds(FireRate);

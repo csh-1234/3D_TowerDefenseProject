@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class MonsterSpawnData
 {
-    public GameObject monsterPrefab; // 몬스터 프리팹
-    public int spawnCount;           // 몬스터 등장 수량
+    public GameObject monsterPrefab; 
+    public int spawnCount;           
 }
 
 public class MonsterSpawner : MonoBehaviour
@@ -63,7 +63,6 @@ public class MonsterSpawner : MonoBehaviour
     {
         if (activeSpawnPoints == null || activeSpawnPoints.Count == 0)
         {
-            Debug.LogWarning("활성화된 스폰 지점이 없음");
             return;
         }
 
@@ -72,7 +71,6 @@ public class MonsterSpawner : MonoBehaviour
 
         if (weightedMonsterPool.Count == 0)
         {
-            Debug.Log("모든 몬스터 등장 완료");
             StopSpawning();
             return;
         }

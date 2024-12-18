@@ -36,17 +36,6 @@ public class DroneTower : Tower
 
     public override void ApplyBuff(BuffField buff)
     {
-        //if (!IsBuffed)  // 버프가 처음 적용될 때만 원본 값 저장
-        //{
-        //    originalDamage = Damage;
-        //    originalRange = Range;
-        //    if (drone != null)
-        //    {
-        //        originalDroneDamage = drone.damage;
-        //        originalDroneRange = drone.attackRange;
-        //    }
-        //}
-        
         base.ApplyBuff(buff);
         
         if (drone != null)
@@ -59,17 +48,6 @@ public class DroneTower : Tower
     public override void RemoveBuff(BuffField buff)
     {
         base.RemoveBuff(buff);
-        
-        //if (!IsBuffed)  // 모든 버프가 제거되었을 때만 원래 값으로 복구
-        //{
-        //    if (drone != null)
-        //    {
-        //        drone.damage = originalDroneDamage;
-        //        drone.attackRange = originalDroneRange;
-        //    }
-        //    Damage = originalDamage;
-        //    Range = originalRange;
-        //}
     }
 
     protected override void Start()
@@ -86,36 +64,13 @@ public class DroneTower : Tower
         }
         else
         {
-            Debug.LogError("드론 또는 홈 포지션을 찾을 수 없습니다!");
+            Debug.LogError("?쒕줎 ?먮뒗 ???ъ??섏쓣 李얠쓣 ???놁뒿?덈떎!");
         }
         
         drone.projectilePrefab = projectiles[Level - 1];
         drone.projectileEffect = muzzleEffects[Level - 1];
         drone.projectileHitEffect = HitEffects[Level - 1];
     }
-
-    //protected virtual void Detect()
-    //{
-    //    if (CurrentTarget == null)
-    //    {
-    //        Collider[] hitColliders = Physics.OverlapSphere(gameObject.transform.position, Range);
-    //        foreach (Collider target in hitColliders)
-    //        {
-    //            if (target.CompareTag("Monster"))
-    //            {
-    //                CurrentTarget = target.GetComponent<Transform>();
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (Vector3.Distance(CurrentTarget.transform.position, transform.position) > Range)
-    //        {
-    //            CurrentTarget = null;
-    //        }
-    //    }
-    //}
 
     protected override void Detect()
     {
@@ -171,7 +126,6 @@ public class DroneTower : Tower
 
     protected override IEnumerator Attack()
     {
-        // 드론이 자체적으로 공격하므로 여기서는 아무것도 하지 않음
         yield break;
     }
 
@@ -183,7 +137,7 @@ public class DroneTower : Tower
             drone.attackRange += 1.5f;
             drone.shootCooldown *= 0.5f;
 
-            originalDroneRange += 1.5f;  // 원본 값도 증가
+            originalDroneRange += 1.5f; 
             Range += 1.5f;
             SetByLevel();
         }
@@ -192,7 +146,7 @@ public class DroneTower : Tower
             drone.damage += 1;
             drone.shootCooldown *= 0.2f;
 
-            originalDroneDamage += 1;  // 원본 값도 증가
+            originalDroneDamage += 1;
             Damage +=1;
             SetByLevel();
         }

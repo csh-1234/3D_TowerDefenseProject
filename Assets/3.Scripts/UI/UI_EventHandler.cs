@@ -7,17 +7,17 @@ using UnityEngine.EventSystems;
 
 public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public Action OnClickHandler = null;        // 마우스 클릭
-    public Action OnPressedHandler = null;      // 마우스 꾹 누름
-    public Action OnPointerDownHandler = null;  // 마우스 꾹 누름 유지
-    public Action OnPointerUpHandler = null;    // 마우스 누름 해제
+    public Action OnClickHandler = null;        
+    public Action OnPressedHandler = null;      
+    public Action OnPointerDownHandler = null;  
+    public Action OnPointerUpHandler = null;    
 
-    public Action<BaseEventData> OnDragHandler = null;      // 마우스 드래그
-    public Action<BaseEventData> OnBeginDragHandler = null; // 마우스 드래그 중
-    public Action<BaseEventData> OnEndDragHandler = null;   // 마우스 드래그 종료
+    public Action<BaseEventData> OnDragHandler = null;      
+    public Action<BaseEventData> OnBeginDragHandler = null; 
+    public Action<BaseEventData> OnEndDragHandler = null;   
 
-    public Action OnPointerEnterHandler = null; // 마우스 오버 시작
-    public Action OnPointerExitHandler = null;  // 마우스 오버 종료
+    public Action OnPointerEnterHandler = null; 
+    public Action OnPointerExitHandler = null;  
 
     bool isPressed = false;
 
@@ -31,19 +31,6 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IPointerDown
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            Debug.Log("좌클릭");
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            Debug.Log("우클릭");
-        }
-        else if (eventData.button == PointerEventData.InputButton.Middle)
-        {
-            Debug.Log("중간 버튼 클릭");
-        }
-
         OnClickHandler?.Invoke();
     }
 

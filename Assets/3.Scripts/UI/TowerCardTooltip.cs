@@ -34,17 +34,15 @@ public class TowerCardTooltip : MonoBehaviour
         tooltip.GetComponent<AcademyTowerTooltip>().towerData = Data;
         currentTooltip = Instantiate(tooltip, transform);
         RectTransform rectTransform = currentTooltip.GetComponent<RectTransform>();
-        //rectTransform.localRotation = Quaternion.identity;
         rectTransform.rotation = Quaternion.identity;
 
-        rectTransform.anchoredPosition = new Vector2(0, 50); // 원하는 위치로 조정
+        rectTransform.anchoredPosition = new Vector2(0, 50);
     }
 
     protected virtual void OnExit()
     {
         if (currentTooltip != null)
         {
-            // 방법 1: 즉시 삭제
             Destroy(currentTooltip);
         }
     }

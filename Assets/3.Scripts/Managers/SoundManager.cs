@@ -4,29 +4,24 @@ using System;
 
 public class SoundManager : MonoBehaviour
 {
-    // 사용예시 : SoundManager.Instance.Play("BGM_Name", SoundManager.Sound.Bgm); 
-    // Resources/Sounds 폴더 안에 BGM_Name이라는 사운드 존재해야 함.
-
     public enum Sound
     {
         Bgm,
         Effect,
-        MaxCount // sound Enmum의 종류에 따라 가변적으로 늘어남
+        MaxCount 
     }
 
     private static SoundManager instance;
     public static SoundManager Instance {
         get 
         {
-            //SoundManager 첫 호출시 프로퍼티 접근
             if (instance == null)
             {
-                //instance 생성 및 @Sound 오브젝트에 SoundManger 할당 후 DontDestroyOnLoad처리
                 GameObject go = GameObject.Find("@Sound");
                 if (go == null)
                 {
                     go = new GameObject { name = "@Sound" };
-                    go.AddComponent<SoundManager>(); // 첫 호출시 이 시점에서 Awake 실행됨
+                    go.AddComponent<SoundManager>(); 
                 }
                 else
                 {
@@ -38,8 +33,8 @@ public class SoundManager : MonoBehaviour
         } 
     }
 
-    private AudioSource[] _audioSources = new AudioSource[(int)Sound.MaxCount]; // 사운드 데이터 출력하는곳 ex) bgm, effect..
-    private Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>(); //여기에 사운드 데이터 저장됨
+    private AudioSource[] _audioSources = new AudioSource[(int)Sound.MaxCount]; 
+    private Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
     private void Awake()
     {
@@ -80,7 +75,7 @@ public class SoundManager : MonoBehaviour
 
     public void Play(string path, Sound type = Sound.Effect, float pitch = 1.0f)
     {
-        Play(path, type, pitch, true);  // 기본적으로 BGM은 loop
+        Play(path, type, pitch, true);
     }
 
     public void Play(string path, Sound type, float pitch, bool loop)
@@ -135,10 +130,7 @@ public class SoundManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError($"AudioClip Missing! Path: {path}");
-                    // 사용 가능한 모든 클립 출력
                     AudioClip[] allClips = Resources.LoadAll<AudioClip>("Sounds");
-                    Debug.Log("Available clips in Sounds folder:");
                     foreach (var clip in allClips)
                     {
                         Debug.Log($"- {clip.name}");

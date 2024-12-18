@@ -14,9 +14,7 @@ public class BossMonster : Monster
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        
     }
-
 
     private void Start()
     {

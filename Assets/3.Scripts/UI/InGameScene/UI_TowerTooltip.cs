@@ -30,28 +30,17 @@ public class UI_TowerTooltip : MonoBehaviour
     public Button UpgradeButton;
     public Button SellButton;
 
-    private Tower selectedTower; // 현재 선택된 타워
-    private GridData towerData; // 타워 데이터 참조
-    private PlacementSystem placementSystem; // PlacementSystem 참조 추가
+    private Tower selectedTower;
+    private GridData towerData; 
+    private PlacementSystem placementSystem;
 
     private void Start()
     {
-        // PlacementSystem 찾기
         placementSystem = FindObjectOfType<PlacementSystem>();
         if (placementSystem != null)
         {
-            // TowerData 직접 가져오기
             towerData = placementSystem.GetTowerData();
-            if (towerData == null)
-            {
-                Debug.LogError("Failed to get TowerData from PlacementSystem");
-            }
         }
-        else
-        {
-            Debug.LogError("PlacementSystem not found in scene");
-        }
-        
         UpdateUI();
     }
 
@@ -92,7 +81,6 @@ public class UI_TowerTooltip : MonoBehaviour
         
         if (selectedTower != null && UpgradeButton != null && UpgradeText != null)
         {
-            // 최대 레벨이면 업그레이드 버튼 비활성화
             if (selectedTower.Level >= selectedTower.MaxLevel)
             {
                 UpgradeText.text = "Max Level";
@@ -105,7 +93,6 @@ public class UI_TowerTooltip : MonoBehaviour
             }
         }
 
-        // 버튼 이벤트 연결
         if (UpgradeButton != null)
         {
             UpgradeButton.onClick.RemoveAllListeners();
@@ -131,10 +118,6 @@ public class UI_TowerTooltip : MonoBehaviour
                 selectedTower.Upgrade();
                 SetTower(selectedTower);
             }
-            else
-            {
-                Debug.Log("Not enough gold!");
-            }
         }
     }
 
@@ -145,48 +128,23 @@ public class UI_TowerTooltip : MonoBehaviour
         if (selectedTower != null && towerData != null)
         {
             SoundManager.Instance.Play("TowerSell", SoundManager.Sound.Effect);
-            // 판매 금액 추가
             GameManager.Instance.CurrentMoney += int.Parse(SellPrice);
             
-            // 타워의 그리드 위치 계산 (floor 값 포함)
             Vector3 worldPos = selectedTower.transform.position;
             Vector3Int gridPosition = towerData.WorldToGridPosition(worldPos);
             
-            Debug.Log($"Selling tower at world position {worldPos}, grid position {gridPosition}");
             
-            // TowerData에서 타워 정보 제거
             PlacementData data = towerData.GetPlacementData(gridPosition);
             if (data != null)
             {
-                Debug.Log($"Found tower data at {gridPosition} with ID: {data.ID}, Index: {data.PlacedObjectIndex}, OccupiedPositions: {data.occupiedPositions.Count}");
-                
-                // TowerData에서 타워 정보 제거
                 towerData.RemoveObjectAt(gridPosition);
-                
-                // ObjectPlacer에서 타워 제거
-                if (data.PlacedObjectIndex >= 0)
-                {
-                    Debug.Log($"Removing tower object at index: {data.PlacedObjectIndex}");
-                    //ObjectPlacer.Instance?.RemoveObjectAt(ObjectPlacer.Instance.placedGameObjects.Count - data.PlacedObjectIndex);
-                }
-                
-                Debug.Log($"Successfully removed tower data from grid position {gridPosition}");
             }
 
-            // 타워 리스트에서 제거
             GameManager.Instance.PlacedTowerList.Remove(selectedTower);
             
-            // 타워 게임 오브젝트 제거
-            Debug.Log($"Destroying tower game object");
             Destroy(selectedTower.gameObject);
-
             GameManager.Instance.tooltipCount = false;
-            // 툴팁 제거
             Destroy(gameObject);
-        }
-        else
-        {
-            Debug.LogError($"Cannot sell tower: selectedTower is {(selectedTower == null ? "null" : "not null")}, towerData is {(towerData == null ? "null" : "not null")}");
         }
     }
 }

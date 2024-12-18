@@ -62,9 +62,7 @@ public class IceTower : Tower
     {
         if (Level == 2)
         {
-            // 기본 스탯 증가
             baseAttackDamage += 1;
-            // 버프가 없을 경우 현재 값 설정
             if (originalStats.Count == 0)
             {
                 Damage = baseAttackDamage;
@@ -75,7 +73,6 @@ public class IceTower : Tower
             FireRate /= 1.5f;
             baseRange += 2f;
 
-            // 버프가 없을 경우 현재 값 설정
             if (originalStats.Count == 0)
             {
                 Range = baseRange;
@@ -84,19 +81,15 @@ public class IceTower : Tower
 
         SetByLevel();
 
-        // 버프가 있다면 재적용
         if (originalStats.Count > 0)
         {
-            // 현재 적용된 모든 버프를 저장
             var currentBuffs = new List<BuffField>(originalStats.Keys);
 
-            // 모든 버프 제거
             foreach (var buff in currentBuffs)
             {
                 RemoveBuff(buff);
             }
 
-            // 버프 재적용
             foreach (var buff in currentBuffs)
             {
                 ApplyBuff(buff);

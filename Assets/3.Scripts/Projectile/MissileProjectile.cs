@@ -11,7 +11,6 @@ public class MissileProjectile : Projectile
     {
         if (Target == null || other == null)
         {
-            Debug.Log("Target or other is null");
             return;
         }
 
@@ -19,7 +18,6 @@ public class MissileProjectile : Projectile
         {
             if (other.CompareTag("Monster"))
             {
-                Debug.Log("Bomb Hit Monster: " + other.name);
                 Collider[] hit = Physics.OverlapSphere(transform.position, BombRange);
 
                 if(ExplosionParticle != null)
@@ -39,7 +37,6 @@ public class MissileProjectile : Projectile
                         h.gameObject.GetComponent<Monster>().TakeDamage(Damage);
                     }
                 }
-                Debug.Log("Despawning Bomb Projectile");
                 ObjectManager.Instance.Despawn(this);
             }
         }
@@ -49,7 +46,6 @@ public class MissileProjectile : Projectile
     {
         if (other.CompareTag("Monster"))
         {
-            Debug.Log($"Attempting to despawn missile: {gameObject.name}");
             if(ExplosionParticle != null)
             {
                 PooledParticle hitEffect = ObjectManager.Instance.Spawn<PooledParticle>(
@@ -63,7 +59,6 @@ public class MissileProjectile : Projectile
             other.gameObject.GetComponent<Monster>().TakeDamage(Damage);
             
             Projectile projectile = this;
-            Debug.Log($"Despawning projectile component: {projectile != null}");
             ObjectManager.Instance.Despawn(projectile);
         }
     }
@@ -85,8 +80,6 @@ public class MissileProjectile : Projectile
 
     protected override void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Missile OnTriggerEnter - Before base call");
         base.OnTriggerEnter(other);
-        Debug.Log($"Missile OnTriggerEnter - After base call");
     }
 }

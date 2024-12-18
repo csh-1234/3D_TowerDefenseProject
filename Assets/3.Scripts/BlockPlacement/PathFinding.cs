@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-
     PathRequestManager requestManager;
     AGrid grid;
 
@@ -128,8 +127,13 @@ public class PathFinding : MonoBehaviour
         int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
         if (dstX > dstY)
+        {
             return 14 * dstY + 10 * (dstX - dstY);
-        return 14 * dstX + 10 * (dstY - dstX);
+        }
+        else
+        {
+            return 14 * dstX + 10 * (dstY - dstX);
+        }
     }
 
 

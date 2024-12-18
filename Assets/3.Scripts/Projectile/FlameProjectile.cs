@@ -18,7 +18,6 @@ public class FlameProjectile : Projectile
         Monster monster = other.gameObject.GetComponent<Monster>();
         if (monster == null || monster.IsDead) return;
 
-        // 첫 충돌시 즉시 데미지
         monster.TakeDamage(this.Damage);
         _lastDamageTime[other] = Time.time;
     }
